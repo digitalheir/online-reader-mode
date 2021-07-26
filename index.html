@@ -69,6 +69,11 @@
                 const newDoc = document.implementation.createHTMLDocument();
                 const el = newDoc.createElement('html');
                 el.innerHTML = text;
+                try {
+                    newDoc.body.appendChild(el);
+                } catch(e) {
+                    console.log(e);
+                }
                 console.log(el);
                 const parsed = new Readability(newDoc).parse();
                 console.log(parsed);

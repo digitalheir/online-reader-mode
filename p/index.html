@@ -69,10 +69,15 @@
                 const newDoc = document.implementation.createHTMLDocument();
                 const el = newDoc.createElement('html');
                 el.innerHTML = text;
+                try {
+                    newDoc.body.appendChild(el);
+                } catch(e) {
+                    console.log(e);
+                }
                 console.log(el);
                 const parsed = new Readability(newDoc).parse();
                 console.log(parsed);
-            console.log("Parsed! " + parsed);
+                console.log("Parsed! " + parsed);
                 return parsed
             })
             .catch(e => console.error("Error: " + e))
