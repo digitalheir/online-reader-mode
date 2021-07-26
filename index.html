@@ -59,19 +59,20 @@
             //referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
             //body: JSON.stringify(data) // body data type must match "Content-Type" header
         });
-        return response.text().then(function (text) {
-            const newDoc = document.implementation.createHTMLDocument("x");
-            const el = newDoc.createElement('html');
-            el.innerHTML = text;
-            const parsed = new Readability(newDoc).parse();
-            console.log(parsed);
-            return parsed
-        });
+        return response.text();
     }
 
     document.getElementById("url").addEventListener("change", function (e) {
         getUrl((e.target.value || "").trim())
-            .then(r => console.log("Done! " + r))
+            .then(function (text) {
+                const newDoc = document.implementation.createHTMLDocument("x");
+                const el = newDoc.createElement('html');
+                el.innerHTML = text;
+                const parsed = new Readability(newDoc).parse();
+                console.log(parsed);
+            console.log("Done! " + parsed);
+                return parsed
+            })
             .catch(e => console.error("Error: " + e))
     });
 </script>
