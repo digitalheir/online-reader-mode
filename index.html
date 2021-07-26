@@ -70,7 +70,7 @@
     }
 
     document.getElementById("url").addEventListener("change", function (e) {
-        getUrl(e.target.value)
+        getUrl((e.target.value || "").trim())
             .then(r => console.log("Done! " + r))
             .catch(e => console.error("Error: " + e))
     });
