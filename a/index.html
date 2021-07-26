@@ -38,6 +38,9 @@
     Enter URL
 </label>
 <input id="url" type="text"/>
+<h1 id="title"></h1>
+<h2 id="byline"></h2>
+<div id="readable"></div>
 
 <script src="../Readability.js"></script>
 
@@ -62,17 +65,16 @@
         return response.text();
     }
 
-
     document.getElementById("url").addEventListener("change", function (e) {
         getUrl((e.target.value || "").trim())
             .then(function (text) {
-                console.log("txt: "+text.length)
+                console.log("txt: " + text.length)
                 const newDoc = document.implementation.createHTMLDocument();
                 const el = newDoc.createElement('html');
                 el.innerHTML = text;
                 try {
                     newDoc.body.appendChild(el);
-                } catch(e) {
+                } catch (e) {
                     console.log(e);
                 }
                 console.log(el);
@@ -80,9 +82,18 @@
                 console.log(parsed);
                 console.log("Parsed! " + parsed);
 
-                document.getElementById("title").innerHTML = parsed.title;
-                document.getElementById("byline").innerHTML = parsed.byline;
-                document.getElementById("content").innerHTML = parsed.content;
+                const title = document.getElementById("title")
+                if (title) {
+                    title.innerHTML = parsed.title;
+                }
+                const byline = document.getElementById("byline")
+                if (byline) {
+                    byline.innerHTML = parsed.byline;
+                }
+                const content = document.getElementById("readable")
+                if (content) {
+                    content.innerHTML = parsed.content;
+                }
 
                 return parsed
             })
