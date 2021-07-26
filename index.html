@@ -65,8 +65,15 @@
             el.innerHTML = text;
             const parsed = new Readability(newDoc).parse();
             console.log(parsed);
+            return parsed
         });
     }
+
+    document.getElementById("url").addEventListener("change", function (e) {
+        getUrl(e.target.value)
+            .then(r => console.log("Done! " + r))
+            .catch(e => console.error("Error: " + e))
+    });
 </script>
 </body>
 </html>
