@@ -62,6 +62,7 @@
         return response.text();
     }
 
+
     document.getElementById("url").addEventListener("change", function (e) {
         getUrl((e.target.value || "").trim())
             .then(function (text) {
@@ -78,6 +79,11 @@
                 const parsed = new Readability(newDoc).parse();
                 console.log(parsed);
                 console.log("Parsed! " + parsed);
+
+                document.getElementById("title").innerHTML = parsed.title;
+                document.getElementById("byline").innerHTML = parsed.byline;
+                document.getElementById("content").innerHTML = parsed.content;
+
                 return parsed
             })
             .catch(e => console.error("Error: " + e))

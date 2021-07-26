@@ -38,6 +38,8 @@
     Enter URL
 </label>
 <input id="url" type="text"/>
+<h1 id="title"/>
+<h2 id="byline"/>
 <div id="content"/>
 
 <script src="./Readability.js"></script>
@@ -80,6 +82,8 @@
                 console.log(parsed);
                 console.log("Parsed! " + parsed);
 
+                document.getElementById("title").innerHTML = parsed.title;
+                document.getElementById("byline").innerHTML = parsed.byline;
                 document.getElementById("content").innerHTML = parsed.content;
 
                 return parsed
