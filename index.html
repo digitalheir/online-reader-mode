@@ -65,12 +65,13 @@
     document.getElementById("url").addEventListener("change", function (e) {
         getUrl((e.target.value || "").trim())
             .then(function (text) {
+                console.log("txt: "+text)
                 const newDoc = document.implementation.createHTMLDocument("x");
                 const el = newDoc.createElement('html');
                 el.innerHTML = text;
                 const parsed = new Readability(newDoc).parse();
                 console.log(parsed);
-            console.log("Done! " + parsed);
+            console.log("Parsed! " + parsed);
                 return parsed
             })
             .catch(e => console.error("Error: " + e))
