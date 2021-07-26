@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Unique page title - My Site</title>
+
+    <script type="module">
+        document.documentElement.classList.remove('no-js');
+        document.documentElement.classList.add('js');
+    </script>
+
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <!--    <link rel="stylesheet" href="/assets/css/print.css" media="print">-->
+
+    <meta name="description" content="Reader Mode Online">
+    <meta property="og:title" content="Reader Mode Online">
+    <meta property="og:description" content="Reader Mode Online">
+    <!--    <meta property="og:image" content="https://www.mywebsite.com/image.jpg">-->
+    <!--    <meta property="og:image:alt" content="Image description">-->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="website">
+    <!--    <meta name="twitter:card" content="summary_large_image">-->
+    <!--    <meta property="og:url" content="https://www.mywebsite.com/page">-->
+    <!--    <link rel="canonical" href="https://www.mywebsite.com/page">-->
+
+    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/my.webmanifest">
+    <meta name="theme-color" content="#FF00FF">
+</head>
+
+<body>
+
+<label for="url">
+    Enter URL
+</label>
+<input id="url" type="text"/>
+
+<script src="./Readability.js"></script>
+<script src="./Readability-readerable.js"></script>
+<script>
+    async function getUrl(url, data = {}) {
+        // Default options are marked with *
+        const response = await fetch("https://young-lake-26ed.blackenvelope.workers.dev/", {
+            method: 'GET', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'url': url
+                //'Content-Type': 'text/html'
+                //'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow', // manual, *follow, error
+            //referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            //body: JSON.stringify(data) // body data type must match "Content-Type" header
+        });
+        return response.text();
+    }
+
+    document.getElementById("url").addEventListener("change", function (e) {
+        getUrl((e.target.value || "").trim())
+            .then(function (text) {
+                console.log("txt: "+text)
+                const newDoc = document.implementation.createHTMLDocument("x");
+                const el = newDoc.createElement('html');
+                el.innerHTML = text;
+                const parsed = new Readability(newDoc).parse();
+                console.log(parsed);
+            console.log("Parsed! " + parsed);
+                return parsed
+            })
+            .catch(e => console.error("Error: " + e))
+    });
+</script>
+</body>
+</html>
