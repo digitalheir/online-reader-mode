@@ -38,6 +38,7 @@
     Enter URL
 </label>
 <input id="url" type="text"/>
+<div id="content"/>
 
 <script src="./Readability.js"></script>
 
@@ -78,6 +79,9 @@
                 const parsed = new Readability(newDoc).parse();
                 console.log(parsed);
                 console.log("Parsed! " + parsed);
+
+                document.getElementById("content").innerHTML = parsed.content;
+
                 return parsed
             })
             .catch(e => console.error("Error: " + e))
