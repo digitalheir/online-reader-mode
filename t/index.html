@@ -39,8 +39,8 @@
 </label>
 <input id="url" type="text"/>
 
-<script src="./Readability.js"></script>
-<script src="./Readability-readerable.js"></script>
+<script src="../Readability.js"></script>
+<script src="../Readability-readerable.js"></script>
 <script>
     async function getUrl(url, data = {}) {
         // Default options are marked with *
@@ -65,10 +65,11 @@
     document.getElementById("url").addEventListener("change", function (e) {
         getUrl((e.target.value || "").trim())
             .then(function (text) {
-                console.log("txt: "+text)
-                const newDoc = document.implementation.createHTMLDocument("x");
+                console.log("txt: "+text.length)
+                const newDoc = document.implementation.createHTMLDocument();
                 const el = newDoc.createElement('html');
                 el.innerHTML = text;
+                console.log(el);
                 const parsed = new Readability(newDoc).parse();
                 console.log(parsed);
             console.log("Parsed! " + parsed);
