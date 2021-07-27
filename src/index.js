@@ -69,13 +69,17 @@ if (input) {
                         }
 
                         const statusElement = document.getElementById("status");
-                        const isProbablyReaderable = isProbablyReaderable(newDoc);
-                        if(isProbablyReaderable) {
-                            statusElement.classList.add("hidden")
-                            statusElement.innerHTML = ""
+                        if (isProbablyReaderable) {
+                            const probablyReaderable = isProbablyReaderable(newDoc);
+                            if (probablyReaderable) {
+                                statusElement.classList.add("hidden")
+                                statusElement.innerHTML = ""
+                            } else {
+                                statusElement.innerHTML = "⚠&nbsp;Web site is probably not suitable for Reader Mode"
+                                statusElement.classList.remove("hidden")
+                            }
                         } else {
-                            statusElement.innerHTML = "⚠&nbsp;Web site is probably not suitable for Reader Mode"
-                            statusElement.classList.remove("hidden")
+                            console.error("isProbablyReaderable was not defined");
                         }
 
                         const parsed = new Readability(newDoc).parse();
