@@ -11,8 +11,12 @@
         document.documentElement.classList.add('js');
     </script>
 
-    <link rel="stylesheet" href="/assets/css/styles.css">
+<!--    <link rel="stylesheet" href="/assets/css/styles.css">-->
     <!--    <link rel="stylesheet" href="/assets/css/print.css" media="print">-->
+
+<!--  https://purecss.io/  -->
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous">
+
 
     <meta name="description" content="Reader Mode Online">
     <meta property="og:title" content="Reader Mode Online">
@@ -25,11 +29,20 @@
     <!--    <meta property="og:url" content="https://www.mywebsite.com/page">-->
     <!--    <link rel="canonical" href="https://www.mywebsite.com/page">-->
 
-    <link rel="icon" href="/favicon.ico">
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <link rel="manifest" href="/my.webmanifest">
+<!--    <link rel="icon" href="/favicon.ico">-->
+<!--    <link rel="icon" href="/favicon.svg" type="image/svg+xml">-->
+<!--    <link rel="apple-touch-icon" href="/apple-touch-icon.png">-->
+<!--    <link rel="manifest" href="/my.webmanifest">-->
+
     <meta name="theme-color" content="#FF00FF">
+    <style>
+        img {
+        max-width: 100%;
+        /*object-fit: contain; */
+        display: block;
+        height: auto;
+        }
+    </style>
 </head>
 
 <body>
@@ -42,63 +55,7 @@
 <h2 id="byline"></h2>
 <div id="readable"></div>
 
-<script src="./Readability.js"></script>
+<script src="./dist/bundle.js"></script>
 
-<script>
-    async function getUrl(url, data = {}) {
-        // Default options are marked with *
-        const response = await fetch("https://young-lake-26ed.blackenvelope.workers.dev/", {
-            method: 'GET', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-                'url': url
-                //'Content-Type': 'text/html'
-                //'Content-Type': 'application/json'
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            redirect: 'follow', // manual, *follow, error
-            //referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-            //body: JSON.stringify(data) // body data type must match "Content-Type" header
-        });
-        return response.text();
-    }
-
-    document.getElementById("url").addEventListener("change", function (e) {
-        getUrl((e.target.value || "").trim())
-            .then(function (text) {
-                console.log("txt: " + text.length)
-                const newDoc = document.implementation.createHTMLDocument();
-                const el = newDoc.createElement('html');
-                el.innerHTML = text;
-                try {
-                    newDoc.body.appendChild(el);
-                } catch (e) {
-                    console.log(e);
-                }
-                console.log(el);
-                const parsed = new Readability(newDoc).parse();
-                console.log(parsed);
-                console.log("Parsed! " + parsed);
-
-                const title = document.getElementById("title")
-                if (title) {
-                    title.innerHTML = parsed.title;
-                }
-                const byline = document.getElementById("byline")
-                if (byline) {
-                    byline.innerHTML = parsed.byline;
-                }
-                const content = document.getElementById("readable")
-                if (content) {
-                    content.innerHTML = parsed.content;
-                }
-
-                return parsed
-            })
-            .catch(e => console.error("Error: " + e))
-    });
-</script>
 </body>
 </html>
