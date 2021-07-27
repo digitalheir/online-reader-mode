@@ -46,12 +46,6 @@ function parse_query_string(query) {
 const input = document.getElementById("url");
 
 if (input) {
-    const query = window.location.search.substring(1);
-    const urlFromQueryString = parse_query_string(query)["url"];
-    if (urlFromQueryString) {
-        input.value = urlFromQueryString
-    }
-
     input.addEventListener("change",
         function (e) {
 
@@ -136,4 +130,10 @@ if (input) {
                     .catch(e => console.error("Error: " + e))
             }
         });
+    const query = window.location.search.substring(1);
+    const urlFromQueryString = parse_query_string(query)["url"];
+    if (urlFromQueryString) {
+        input.value = urlFromQueryString
+    }
+
 }
