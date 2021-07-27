@@ -54,7 +54,18 @@
         height: auto;
         }
 
-        #readable {
+        #summary {
+            font-style: italic;
+            background: #efefef;
+            border-radius: 0.4em;
+            padding: 0.6em 0.8em;
+            margin: 1.2em 0;
+            transform: translate(-0.6em, 0);
+            /*width: calc(100% + 0.6em);*/
+
+            width: calc(100% + 1.2em);
+        }
+        #readable-wrapper {
             /*max-width: 670px;*/
             max-width: 48em;
         }
@@ -95,11 +106,12 @@
 <div id="status" class="hidden">
     ⚠&nbsp;Web site is probably not suitable for Reader Mode
 </div>
-<div id="summary" class="hidden"></div>
+<div id="readable-wrapper">
 <h1 id="title"></h1>
 <div id="byline"></div>
+<div id="summary" class="hidden"></div>
 <div id="readable"></div>
-
+</div>
 <script src="./dist/bundle.js"></script>
 
 </body>
