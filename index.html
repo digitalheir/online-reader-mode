@@ -15,7 +15,7 @@
     <!--    <link rel="stylesheet" href="/assets/css/print.css" media="print">-->
 
     <!-- Google Fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
 
     <!-- CSS Reset -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
@@ -41,12 +41,31 @@
 
     <meta name="theme-color" content="#FF00FF">
     <style>
+        body {
+            font-family: "Lato", sans-serif;
+
+            color: #1a1a1a;
+            margin: 1em 1.4em;
+        }
         img {
         max-width: 100%;
         /*object-fit: contain; */
         display: block;
         height: auto;
         }
+        .readable {
+            max-width: 670px;
+        }
+
+        @media (min-width: 600px) {
+            body {
+                margin: 1em 2em;
+            }
+        }
+        @media (min-width: 840px) {
+
+        }
+
     </style>
 </head>
 
