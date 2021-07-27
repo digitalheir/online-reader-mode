@@ -45,95 +45,126 @@ function parse_query_string(query) {
 
 const input = document.getElementById("url");
 
+function createDocumentFromHtml(text) {
+    const newDoc = document.implementation.createHTMLDocument();
+    const el = newDoc.createElement('html');
+    el.innerHTML = text;
+    try {
+        newDoc.body.appendChild(el);
+    } catch (e) {
+        console.log(e);
+    }
+    return newDoc;
+}
+
+function setupReaderableStatus(newDoc, statusElement) {
+    if (isProbablyReaderable) {
+        const probablyReaderable = isProbablyReaderable(newDoc);
+        if (probablyReaderable) {
+            statusElement.classList.add("hidden");
+            statusElement.innerHTML = "";
+        } else {
+            statusElement.innerHTML = "⚠&nbsp;Web site is probably not suitable for Reader Mode"
+            statusElement.classList.add("error");
+            statusElement.classList.remove("hidden");
+        }
+    } else {
+        console.error("isProbablyReaderable was not defined");
+    }
+}
+
+// title: article title;
+function setupDocTitle(docTitle) {
+    const title = document.getElementById("title")
+    if (title) {
+        title.innerHTML = docTitle;
+    }
+    return docTitle;
+}
+
+// byline: author metadata;
+function setupByline(parsed) {
+    let bylineStr = (parsed.byline || "").trim();
+    const byline = document.getElementById("byline")
+    if (byline) {
+        byline.innerHTML = bylineStr;
+    }
+    return bylineStr
+}
+
+function setupReadableContent(htmlContent) {
+    const contentElement = document.getElementById("readable")
+    if (contentElement) {
+        contentElement.innerHTML = htmlContent;
+    }
+    return contentElement;
+}
+
+// excerpt: article description, or short excerpt from the content;
+function setupSummary(parsed) {
+    const summary = (parsed.excerpt || "").trim()
+    const summaryElement = document.getElementById("summary");
+    if (summaryElement) {
+        if (summary) {
+            summaryElement.innerHTML = summary
+            summaryElement.classList.remove("hidden");
+        } else {
+            summaryElement.classList.add("hidden");
+            summaryElement.innerHTML = ""
+        }
+    }
+    return summary;
+}
+
+function handleUrlChanged(str) {
+    getUrl(str)
+        .then(function (text) {
+            const newDoc = createDocumentFromHtml(text);
+
+            const statusElement = document.getElementById("status");
+            setupReaderableStatus(newDoc, statusElement);
+
+            const parsed = new Readability(newDoc).parse();
+            //console.log(parsed);
+            const docTitle = setupDocTitle((parsed.title || "").trim());
+            setupByline(parsed);
+
+            // content: HTML string of processed article content;
+            // textContent: text content of the article, with all the HTML tags removed;
+            const contentElement = setupReadableContent(parsed.content || "");
+            setupSummary(parsed);
+            // length: length of an article, in characters;
+            // dir: content direction;
+
+            // siteName: name of the site. NRC
+            const siteName = (contentElement.excerpt || "").trim()
+            document.title = (siteName ? siteName + " — " : "") + docTitle
+            if (history) {
+                history.pushState({
+                    "url": str
+                }, docTitle, "?url=" + encodeURI(str))
+                return parsed
+            }
+        })
+        .catch(e => console.error("Error: " + e))
+}
+
 if (input) {
     input.addEventListener("change",
         function (e) {
-
             const str = (e.target.value || "").trim()
             if (str && str.length > 3) {
-                getUrl(str)
-                    .then(function (text) {
-                        const newDoc = document.implementation.createHTMLDocument();
-                        const el = newDoc.createElement('html');
-                        el.innerHTML = text;
-                        try {
-                            newDoc.body.appendChild(el);
-                        } catch (e) {
-                            console.log(e);
-                        }
-
-                        const statusElement = document.getElementById("status");
-                        if (isProbablyReaderable) {
-                            const probablyReaderable = isProbablyReaderable(newDoc);
-                            if (probablyReaderable) {
-                                statusElement.classList.add("hidden");
-                                statusElement.innerHTML = "";
-                            } else {
-                                statusElement.innerHTML = "⚠&nbsp;Web site is probably not suitable for Reader Mode"
-                                statusElement.classList.add("error");
-                                statusElement.classList.remove("hidden");
-                            }
-                        } else {
-                            console.error("isProbablyReaderable was not defined");
-                        }
-
-                        const parsed = new Readability(newDoc).parse();
-                        console.log(parsed);
-
-
-                        // title: article title;
-                        const docTitle = parsed.title;
-                        const title = document.getElementById("title")
-                        if (title) {
-                            title.innerHTML = docTitle;
-                        }
-
-                        // byline: author metadata;
-                        const byline = document.getElementById("byline")
-                        if (byline) {
-                            byline.innerHTML = parsed.byline;
-                        }
-
-                        // content: HTML string of processed article content;
-                        // textContent: text content of the article, with all the HTML tags removed;
-                        const contentElement = document.getElementById("readable")
-                        if (contentElement) {
-                            contentElement.innerHTML = parsed.content;
-                        }
-                        // excerpt: article description, or short excerpt from the content;
-                        const summaryElement = document.getElementById("summary");
-                        if (summaryElement) {
-                            const summary = (contentElement.excerpt || "").trim()
-                            if (summary) {
-                                summaryElement.innerHTML = summary
-                                summaryElement.classList.remove("hidden");
-                            } else {
-                                summaryElement.classList.add("hidden");
-                                summaryElement.innerHTML = ""
-                            }
-                        }
-                        // length: length of an article, in characters;
-                        // dir: content direction;
-
-                        // siteName: name of the site. NRC
-                        const siteName = (contentElement.excerpt || "").trim()
-
-                        document.title = (siteName ? siteName + " — " : "") + docTitle
-
-                        if (history) {
-                            history.pushState({
-                                "url": str
-                            }, docTitle, "?url=" + encodeURI(str))
-                            return parsed
-                        }
-                    })
-                    .catch(e => console.error("Error: " + e))
+                handleUrlChanged(str);
             }
         });
+
     const query = window.location.search.substring(1);
     const urlFromQueryString = parse_query_string(query)["url"];
     if (urlFromQueryString) {
-        input.value = urlFromQueryString
+        const s = urlFromQueryString.trim();
+        input.value = s
+        if (s && s.length > 5) {
+            handleUrlChanged(s);
+        }
     }
-
 }
