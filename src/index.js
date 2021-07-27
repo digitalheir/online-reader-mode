@@ -1,4 +1,4 @@
-import {Readability} from "@mozilla/readability";
+import {isProbablyReaderable, Readability} from "@mozilla/readability";
 import "core-js";
 import "regenerator-runtime/runtime";
 
