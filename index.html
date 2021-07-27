@@ -53,8 +53,17 @@
         display: block;
         height: auto;
         }
-        .readable {
+
+        #readable {
             max-width: 670px;
+        }
+        #status {
+            background: #f9f9f9;
+            padding: 0.7em 1.4em;
+            color: #c82020;
+        }
+        #status.hidden {
+            display: none;
         }
 
         @media (min-width: 600px) {
@@ -75,6 +84,9 @@
     Enter URL
 </label>
 <input id="url" type="text"/>
+<div id="status">
+    ⚠&nbsp;Web site is probably not suitable for Reader Mode
+</div>
 <h1 id="title"></h1>
 <h2 id="byline"></h2>
 <div id="readable"></div>

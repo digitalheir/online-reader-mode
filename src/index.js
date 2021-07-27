@@ -67,7 +67,17 @@ if (input) {
                         } catch (e) {
                             console.log(e);
                         }
-                        console.log(el);
+
+                        const statusElement = document.getElementById("status");
+                        const isProbablyReaderable = isProbablyReaderable(newDoc);
+                        if(isProbablyReaderable) {
+                            statusElement.classList.add("hidden")
+                            statusElement.innerHTML = ""
+                        } else {
+                            statusElement.innerHTML = "⚠&nbsp;Web site is probably not suitable for Reader Mode"
+                            statusElement.classList.remove("hidden")
+                        }
+
                         const parsed = new Readability(newDoc).parse();
                         console.log(parsed);
 
