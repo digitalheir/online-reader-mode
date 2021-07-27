@@ -72,11 +72,12 @@ if (input) {
                         if (isProbablyReaderable) {
                             const probablyReaderable = isProbablyReaderable(newDoc);
                             if (probablyReaderable) {
-                                statusElement.classList.add("hidden")
-                                statusElement.innerHTML = ""
+                                statusElement.classList.add("hidden");
+                                statusElement.innerHTML = "";
                             } else {
                                 statusElement.innerHTML = "⚠&nbsp;Web site is probably not suitable for Reader Mode"
-                                statusElement.classList.remove("hidden")
+                                statusElement.classList.add("error");
+                                statusElement.classList.remove("hidden");
                             }
                         } else {
                             console.error("isProbablyReaderable was not defined");
@@ -85,19 +86,46 @@ if (input) {
                         const parsed = new Readability(newDoc).parse();
                         console.log(parsed);
 
+
+                        // title: article title;
                         const docTitle = parsed.title;
                         const title = document.getElementById("title")
                         if (title) {
                             title.innerHTML = docTitle;
                         }
+
+                        // byline: author metadata;
                         const byline = document.getElementById("byline")
                         if (byline) {
                             byline.innerHTML = parsed.byline;
                         }
-                        const content = document.getElementById("readable")
-                        if (content) {
-                            content.innerHTML = parsed.content;
+
+                        // content: HTML string of processed article content;
+                        // textContent: text content of the article, with all the HTML tags removed;
+                        const contentElement = document.getElementById("readable")
+                        if (contentElement) {
+                            contentElement.innerHTML = parsed.content;
                         }
+                        // excerpt: article description, or short excerpt from the content;
+                        const summaryElement = document.getElementById("summary");
+                        if (summaryElement) {
+                            const summary = (contentElement.excerpt || "").trim()
+                            if (summary) {
+                                summaryElement.innerHTML = summary
+                                summaryElement.classList.remove("hidden");
+                            } else {
+                                summaryElement.classList.add("hidden");
+                                summaryElement.innerHTML = ""
+                            }
+                        }
+                        // length: length of an article, in characters;
+                        // dir: content direction;
+
+                        // siteName: name of the site. NRC
+                        const siteName = (contentElement.excerpt || "").trim()
+
+                        document.title = (siteName ? siteName + " — " : "") + docTitle
+
                         if (history) {
                             history.pushState({
                                 "url": str

@@ -60,10 +60,12 @@
         #status {
             background: #f9f9f9;
             padding: 0.7em 1.4em;
-            color: #c82020;
         }
-        #status.hidden {
+        .hidden {
             display: none;
+        }
+        .error {
+            color: #c82020;
         }
 
         @media (min-width: 600px) {
@@ -87,6 +89,7 @@
 <div id="status" class="hidden">
     ⚠&nbsp;Web site is probably not suitable for Reader Mode
 </div>
+<div id="summary" class="hidden"></div>
 <h1 id="title"></h1>
 <h2 id="byline"></h2>
 <div id="readable"></div>
