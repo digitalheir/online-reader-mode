@@ -158,6 +158,15 @@ if (input) {
             }
         });
 
+    // input.addEventListener("mouseup", function (event) {
+    //     //event.preventDefault();
+    // });
+    input.addEventListener("focus",
+        function (e) {
+            //e.target.focus();
+            e.target.select();
+        });
+
     const query = window.location.search.substring(1);
     const urlFromQueryString = parse_query_string(query)["url"];
     if (urlFromQueryString) {

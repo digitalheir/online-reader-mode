@@ -6,12 +6,12 @@
 
     <title>Online reader mode</title>
 
-<!--    <script type="module">-->
-<!--        document.documentElement.classList.remove('no-js');-->
-<!--        document.documentElement.classList.add('js');-->
-<!--    </script>-->
+    <!--    <script type="module">-->
+    <!--        document.documentElement.classList.remove('no-js');-->
+    <!--        document.documentElement.classList.add('js');-->
+    <!--    </script>-->
 
-<!--    <link rel="stylesheet" href="/assets/css/styles.css">-->
+    <!--    <link rel="stylesheet" href="/assets/css/styles.css">-->
     <!--    <link rel="stylesheet" href="/assets/css/print.css" media="print">-->
 
     <!-- Google Fonts -->
@@ -34,10 +34,10 @@
     <!--    <meta property="og:url" content="https://www.mywebsite.com/page">-->
     <!--    <link rel="canonical" href="https://www.mywebsite.com/page">-->
 
-<!--    <link rel="icon" href="/favicon.ico">-->
-<!--    <link rel="icon" href="/favicon.svg" type="image/svg+xml">-->
-<!--    <link rel="apple-touch-icon" href="/apple-touch-icon.png">-->
-<!--    <link rel="manifest" href="/my.webmanifest">-->
+    <!--    <link rel="icon" href="/favicon.ico">-->
+    <!--    <link rel="icon" href="/favicon.svg" type="image/svg+xml">-->
+    <!--    <link rel="apple-touch-icon" href="/apple-touch-icon.png">-->
+    <!--    <link rel="manifest" href="/my.webmanifest">-->
 
     <meta name="theme-color" content="#FF00FF">
     <style>
@@ -47,11 +47,12 @@
             color: #1a1a1a;
             margin: 1em 1.4em;
         }
+
         img {
-        max-width: 100%;
-        /*object-fit: contain; */
-        display: block;
-        height: auto;
+            max-width: 100%;
+            /*object-fit: contain; */
+            display: block;
+            height: auto;
         }
 
         #summary {
@@ -65,22 +66,27 @@
 
             width: calc(100% + 1.2em);
         }
+
         #readable-wrapper {
             /*max-width: 670px;*/
             max-width: 48em;
         }
+
         #byline {
             color: #8e8e8e;
             font-size: 1em;
             font-weight: bold;
         }
+
         #status {
             background: #f9f9f9;
             padding: 0.7em 1.4em;
         }
+
         .hidden {
             display: none;
         }
+
         .error {
             color: #c82020;
         }
@@ -90,27 +96,63 @@
                 margin: 1em 2em;
             }
         }
+
         @media (min-width: 840px) {
 
         }
 
+        .close-icon {
+            display: inline-block;
+            width: 50px;
+
+            flex-shrink: 0;
+            flex-grow: 0;
+            padding: 0;
+            margin: 0 0 0 12px;
+
+
+        }
+
+        .search-box:not(:valid) ~ .close-icon {
+            display: none;
+        }
+
+        .flex-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        #url {
+            margin: 0;
+            /*align-self: center;*/
+            /*flex-shrink: 0;*/
+            /*flex-grow: 1;*/
+        }
     </style>
 </head>
 
 <body>
 
-<label for="url">
-    Enter URL
-</label>
-<input id="url" type="text"/>
-<div id="status" class="hidden">
-    ⚠&nbsp;Web site is probably not suitable for Reader Mode
-</div>
 <div id="readable-wrapper">
-<h1 id="title"></h1>
-<div id="byline"></div>
-<div id="summary" class="hidden"></div>
-<div id="readable"></div>
+    <form>
+        <label for="url">
+            Enter URL
+        </label>
+
+        <div class="flex-container">
+            <input id="url" type="text"/>
+            <button class="close-icon" type="reset">x</button>
+        </div>
+    </form>
+    <div id="status" class="hidden">
+        ⚠&nbsp;Web site is probably not suitable for Reader Mode
+    </div>
+
+    <h1 id="title"></h1>
+    <div id="byline"></div>
+    <div id="summary" class="hidden"></div>
+    <div id="readable"></div>
 </div>
 <script src="./dist/bundle.js"></script>
 
