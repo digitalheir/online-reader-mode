@@ -149,6 +149,8 @@ function handleUrlChanged(str) {
         .catch(e => console.error("Error: " + e))
 }
 
+let currentUrl = ""
+
 if (input) {
     input.addEventListener("change",
         function (e) {
@@ -157,6 +159,15 @@ if (input) {
                 handleUrlChanged(str);
             }
         });
+
+    const form = document.getElementById("url_form");
+    form.onsubmit = function (e) {
+        e.preventDefault();
+        const str = (e.target.value || "").trim()
+        if (str && str.length > 3 && str !== currentUrl) {
+            handleUrlChanged(str);
+        }
+    }
 
     // input.addEventListener("mouseup", function (event) {
     //     //event.preventDefault();
